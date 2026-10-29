@@ -1,13 +1,13 @@
 <!doctype html><html lang="uk"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>облік</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#f4ecda">
+<title>облік</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#eaf1fb">
 <link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="облік">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#f4ecda;--ink:#2b2418;--mut:#8a7d68;--amb:#d98b1c;--line:#e6d9bd;--red:#c4402f}
-body{margin:0;background:var(--bg) repeating-linear-gradient(transparent 0 31px,#eadfc6 31px 32px) fixed;color:var(--ink);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+:root{--bg:#eaf1fb;--ink:#1b2a41;--mut:#6b7f99;--amb:#2f6fd0;--line:#d3e0f2;--red:#c4402f}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 #app{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) 14px calc(150px + env(safe-area-inset-bottom))}
-h1,h2,h3,.big,.mn b{font-family:"Iowan Old Style",Georgia,serif;margin:0}
+h1,h2,h3,.mn b{font-family:"Iowan Old Style",Georgia,serif;margin:0}
 button{font:inherit;color:inherit;cursor:pointer}
 small,.mut{color:var(--mut)}
 .top{text-align:center;padding:6px 0}
@@ -15,13 +15,13 @@ small,.mut{color:var(--mut)}
 .mn b{min-width:170px;font-size:1.15rem}
 .mn button{width:44px;height:44px;border:0;background:none;font-size:1.6rem;color:var(--amb)}
 .big{font-size:2.5rem;font-weight:700;letter-spacing:-.5px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 1px 0 var(--line),0 8px 16px -12px rgba(90,60,10,.4)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 1px 0 var(--line),0 8px 16px -12px rgba(20,50,100,.35)}
 .card.np{padding:2px 12px}
 .card h3{font-size:1.05rem;margin-bottom:8px}
 .lr{padding:7px 0}.lt{display:flex;justify-content:space-between;gap:8px}
-.pb{height:7px;background:#f1e8d3;border-radius:5px;overflow:hidden;margin-top:5px}.pb i{display:block;height:100%;border-radius:5px}
+.pb{height:7px;background:#dfe9f7;border-radius:5px;overflow:hidden;margin-top:5px}.pb i{display:block;height:100%;border-radius:5px}
 .ov{color:var(--red)}
-.seg{display:grid;grid-template-columns:1fr 1fr;background:#e9dec4;border-radius:12px;padding:3px;margin:14px 0 10px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#d9e5f6;border-radius:12px;padding:3px;margin:14px 0 10px}
 .seg button{border:0;background:none;padding:10px;border-radius:10px;font-size:.95rem}
 .seg .on{background:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 input{width:100%;font-size:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit}
@@ -34,22 +34,24 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 .tx{flex:1;min-width:0}.tx b,.tx small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
 .amt{white-space:nowrap;font-weight:600}
 .empty{text-align:center;color:var(--mut);padding:36px 10px}
-#fab{position:fixed;right:max(16px,calc(50% - 244px));bottom:calc(76px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;border:0;background:var(--amb);color:#fff;font-size:2rem;box-shadow:0 8px 18px -4px rgba(150,90,0,.6);display:flex;align-items:center;justify-content:center;z-index:5}
-#tabs{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);background:#fffaf0;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
+#fab{position:fixed;right:max(16px,calc(50% - 244px));bottom:calc(76px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;border:0;background:var(--amb);color:#fff;font-size:2rem;box-shadow:0 8px 18px -4px rgba(30,80,170,.55);display:flex;align-items:center;justify-content:center;z-index:5}
+#tabs{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);background:#f7faff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
 #tabs button{border:0;background:none;padding:9px 0 8px;font-size:.74rem;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px}
 #tabs button span{font-size:1.4rem;filter:grayscale(1);opacity:.7}
 #tabs .on{color:var(--amb);font-weight:700}#tabs .on span{filter:none;opacity:1}
-.sh{position:fixed;inset:0;background:rgba(43,36,24,.45);display:flex;align-items:flex-end;z-index:20}
-.pn{width:100%;max-width:520px;margin:0 auto;background:#fffaf0;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+.sh{position:fixed;inset:0;background:rgba(20,30,50,.45);display:flex;flex-direction:column;justify-content:flex-end;z-index:20}
+.pn{width:100%;max-width:520px;margin:0 auto;background:#f7faff;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
 .pn h2{margin-bottom:6px}
 .pn label{display:block;font-size:.85rem;color:var(--mut);margin:12px 0 5px}.pn label input{margin-top:5px;color:var(--ink)}
-.amtl{display:flex!important;align-items:center;gap:8px}.amtl input{font:700 2.1rem Georgia,serif;border:0;border-bottom:2px solid var(--amb);border-radius:0;background:none;padding:6px 0}.amtl span{font-size:1.8rem;color:var(--amb)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.chip{border:1.5px solid var(--c);background:#fff;border-radius:20px;padding:9px 13px;min-height:42px}
-.chip.on{background:var(--c);color:#fff}
+.amtl{display:flex!important;align-items:center;gap:8px}.amtl input{font-size:2.1rem;font-weight:700;border:0;border-bottom:2px solid var(--amb);border-radius:0;background:none;padding:6px 0}.amtl span{font-size:1.8rem;color:var(--amb)}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:14px -4px 0;padding:4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.ct{flex:none;width:76px;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ci{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.7rem;background:#fff;border:2px solid transparent;box-shadow:0 1px 3px rgba(20,50,100,.15)}
+.ct.on .ci{background:color-mix(in srgb,var(--c) 18%,#fff);border-color:var(--c)}
+.ct small{max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.76rem}.ct.on small{color:var(--c);font-weight:700}
 .grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .grid button{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:1.3rem}
-.grid .on{border-color:var(--amb);background:#fdf0d5}
+.grid .on{border-color:var(--amb);background:#e1edfd}
 .grid .sw{border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}.grid .sw.on{box-shadow:0 0 0 3px var(--ink)}
 .acts{display:flex;gap:10px;margin-top:18px}
 .acts button{flex:1;min-height:50px;border-radius:12px;border:0;font-weight:600}
@@ -57,6 +59,19 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 .btn{display:block;width:100%;min-height:48px;border-radius:12px;border:1.5px solid var(--amb);background:#fff;color:var(--amb);font-weight:600;margin-top:8px}
 .head{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
 .head h1{font-size:1.6rem}.head button{border:0;background:var(--amb);color:#fff;border-radius:12px;padding:11px 15px;font-weight:600;min-height:44px}
+.xc{width:calc(100% - 20px);max-width:500px;margin:0 auto 8px;background:#f7faff;border-radius:24px;padding:18px 16px 14px}
+.amr{display:flex;align-items:center;gap:8px;font-size:1.6rem;font-weight:600}.amr span{color:var(--mut)}#ad.ph{color:#9aaac0;font-weight:500}
+#ar{display:block;min-height:1.2em;margin:2px 0 0 32px}
+.cm{margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:1.1rem}.cm input{border:0;background:none;padding:10px 0}.cm input:focus{outline:0}
+.bt{display:flex;justify-content:space-between;align-items:center;margin-top:6px}.bl{display:flex;gap:8px;align-items:center}
+.dp{position:relative;display:flex;align-items:center;gap:8px;background:#e8eff9;border:1px solid var(--line);border-radius:26px;padding:0 18px;height:52px;color:var(--mut);overflow:hidden}
+.dp input{position:absolute;inset:0;opacity:0;width:100%;height:100%;padding:0;border:0}
+.tr{width:52px;height:52px;border-radius:50%;border:0;background:#fbe3df;font-size:1.2rem}
+.ok{width:62px;height:62px;border-radius:50%;border:0;background:var(--amb);display:grid;place-items:center}
+.kp{background:#f7faff;border-radius:24px 24px 0 0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));width:100%;max-width:520px;margin:0 auto}
+.kr{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.kd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kp button{border:0;border-radius:14px;background:#e8eff9;font-size:1.5rem;font-weight:600;height:min(9vh,60px)}
+.kr button{height:min(7vh,48px);font-size:1.3rem;color:var(--amb)}.kp .eq{background:var(--amb);color:#fff}
 svg text{font-family:system-ui,sans-serif}
 </style></head><body><main id="app"></main>
 <button id="fab" onclick="oe()" aria-label="Додати витрату">+</button>
@@ -64,12 +79,13 @@ svg text{font-family:system-ui,sans-serif}
 <div id="ov"></div>
 <script>
 const $=s=>document.querySelector(s),K='oblik.v1',p=n=>String(n).padStart(2,'0');
-const COL=['#d98b1c','#c4572f','#b83a5e','#7a5aa6','#3f7ac4','#2f9a8a','#5d9a3a','#7d6b5a'];
+const COL=['#2f6fd0','#1e4a9c','#5ba3e8','#0e8aa8','#4b4fc4','#8db4e2','#12356b','#3aa0b8'],OLDC=['#d98b1c','#c4572f','#b83a5e','#7a5aa6','#3f7ac4','#2f9a8a','#5d9a3a','#7d6b5a'];
 const ICO=['🛒','🚌','🏠','💊','🎬','🍽️','☕','👕','🎁','📱','🐾','✈️','📚','💇','🏋️','🔧','🚗','💡','👶','🎮','🧾','💰'];
 const MN=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],MS=['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
 const iso=d=>d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()),today=()=>iso(new Date());
 let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
 if(!S||!S.cats)S={cats:[['c1','Продукти','🛒',5],['c2','Транспорт','🚌',4],['c3','Дім','🏠',0],['c4',"Здоров'я",'💊',2],['c5','Розваги','🎬',3],['c6','Інше','🧾',7]].map(a=>({id:a[0],name:a[1],desc:'',icon:a[2],color:COL[a[3]],limit:0})),exp:[]};
+S.cats.forEach(c=>{const i=OLDC.indexOf(c.color);if(i>=0)c.color=COL[i]});
 const save=()=>localStorage.setItem(K,JSON.stringify(S));
 let T='h',V='d',Q='',M=today().slice(0,7),CM=M,F={};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -85,9 +101,8 @@ const sheet=h=>{$('#ov').innerHTML=`<div class="sh" onclick="if(event.target==th
 function tb(t){T=t;R();scrollTo(0,0)}
 function R(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==T));$('#app').innerHTML=T=='h'?H():T=='c'?C():G();if(T=='h')L();$('#fab').style.display=T=='h'?'flex':'none'}
 function mv(d){let y=+M.slice(0,4),m=+M.slice(5)+d;if(m<1){m=12;y--}if(m>12){m=1;y++}M=y+'-'+p(m);R()}
-function H(){const lc=S.cats.filter(c=>c.limit>0);
+function H(){
 return `<div class="top"><div class="mn"><button onclick="mv(-1)">‹</button><b>${mname(M)}</b><button onclick="mv(1)">›</button></div><small>витрачено за місяць</small><div class="big">${money(sum(monthExp(M)))}</div></div>
-<section class="card"><h3>Залишок лімітів</h3>${lc.length?lc.map(c=>{const s=spent(c,M);return `<div class="lr"><div class="lt"><span>${c.icon} ${esc(c.name)}</span><b class="${s>c.limit?'ov':''}">${s>c.limit?'−':''}${money(Math.abs(c.limit-s))}</b></div>${bar(c,M)}</div>`}).join(''):'<small>Задайте ліміти у вкладці «Категорії»</small>'}</section>
 <div class="seg"><button class="${V=='d'?'on':''}" onclick="V='d';R()">За датами</button><button class="${V=='c'?'on':''}" onclick="V='c';R()">За категоріями</button></div>
 <input id="q" type="search" placeholder="🔍  Пошук у записах (по всіх місяцях)" value="${esc(Q)}" oninput="Q=this.value;L()"><div id="list"></div>`}
 const row=(e,sub)=>{const c=cat(e.cat);return `<div class="row" style="--c:${c.color}" onclick="oe('${e.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(e.note||c.name)}</b><small>${esc(c.name)}${sub?' · '+sd(e.date):''}</small></div><span class="amt">−${money(e.amount)}</span></div>`};
@@ -97,13 +112,22 @@ let h='';if(!a.length)h=`<div class="empty">${terms.length?'Нічого не з
 else if(V=='d'){const g={};a.forEach(e=>(g[e.date]=g[e.date]||[]).push(e));h=Object.keys(g).map(d=>`<div class="dh"><b>${fd(d)}</b><span>${money(sum(g[d]))}</span></div><div class="card np">${g[d].map(e=>row(e,terms.length)).join('')}</div>`).join('')}
 else{const ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>sum(a.filter(e=>e.cat==y))-sum(a.filter(e=>e.cat==x)));h=ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id);return `<div class="dh"><b>${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}</span></div><div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}).join('')}
 $('#list').innerHTML=h}
-const chips=()=>S.cats.length?S.cats.map(c=>`<button type="button" class="chip ${F.cat==c.id?'on':''}" style="--c:${c.color}" onclick="F.cat='${c.id}';$('#ch').innerHTML=chips()">${c.icon} ${esc(c.name)}</button>`).join(''):'<small>Спершу додайте категорію</small>';
-function oe(id){const e=id?S.exp.find(x=>x.id==id):null;F={id,cat:e?e.cat:(S.cats[0]||{}).id};
-sheet(`<h2>${e?'Редагувати запис':'Нова витрата'}</h2><label class="amtl"><input id="fa" inputmode="decimal" placeholder="0" value="${e?e.amount:''}"><span>₴</span></label><label>Дата<input id="fd" type="date" value="${e?e.date:today()}"></label><div class="chips" id="ch">${chips()}</div><label>Коментар<input id="fn" placeholder="необов'язково" value="${esc(e?e.note:'')}"></label><div class="acts">${e?'<button class="dg" onclick="de()">Видалити</button>':''}<button class="pr" onclick="se()">Зберегти</button></div>`);
-if(!e)setTimeout(()=>$('#fa').focus(),80)}
-function se(){const a=parseFloat($('#fa').value.replace(',','.')),d=$('#fd').value;
-if(!(a>0))return $('#fa').focus();if(!d)return $('#fd').focus();if(!F.cat)return alert('Оберіть категорію');
-const r={id:F.id||uid(),date:d,amount:Math.round(a*100)/100,cat:F.cat,note:$('#fn').value.trim()};
+const chips=()=>S.cats.length?S.cats.map(c=>`<button type="button" class="ct ${F.cat==c.id?'on':''}" style="--c:${c.color}" onclick="F.cat='${c.id}';$('#ch').innerHTML=chips()"><span class="ci">${c.icon}</span><small>${esc(c.name)}</small></button>`).join(''):'<small>Спершу додайте категорію</small>';
+let X='';const OP='+−×÷';
+const dl=d=>{const t=today(),y=new Date();y.setDate(y.getDate()-1);return d==t?'сьогодні':d==iso(y)?'вчора':sd(d)};
+function ev(){const s=X.replace(/[+−×÷]$/,'');if(!s)return null;const j=s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[\d.+\-*\/]+$/.test(j))return null;try{const v=Function('return '+j)();return isFinite(v)?Math.round(v*100)/100:null}catch(e){return null}}
+function ad(){$('#ad').textContent=X||'Сума';$('#ad').className=X?'':'ph';const v=ev();$('#ar').textContent=/[+−×÷]/.test(X)&&v!=null?'= '+money(v):'\u00a0'}
+function kk(k){if(k=='⌫')X=X.slice(0,-1);
+else if(k=='='){const v=ev();if(v!=null)X=String(v)}
+else if(OP.includes(k)){if(!X)return;X=OP.includes(X.slice(-1))?X.slice(0,-1)+k:X+k}
+else if(k=='.'){const t=X.split(/[+−×÷]/).pop();if(t.includes('.'))return;X+=t?'.':'0.'}
+else{const t=X.split(/[+−×÷]/).pop();X=t=='0'?X.slice(0,-1)+k:X+k}
+ad()}
+function oe(id){const e=id?S.exp.find(x=>x.id==id):null,d=e?e.date:today();F={id,cat:e?e.cat:(S.cats[0]||{}).id};X=e?String(e.amount):'';
+$('#ov').innerHTML=`<div class="sh" onclick="if(event.target==this)cl()"><div class="xc"><div class="amr"><span>₴</span><div id="ad"></div></div><small id="ar"></small><div class="chips" id="ch">${chips()}</div><label class="cm"><span>💬</span><input id="fn" placeholder="Коментар" value="${esc(e?e.note:'')}" onfocus="$('#kp').style.display='none'" onblur="setTimeout(function(){var k=$('#kp');if(k)k.style.display=''},200)"></label><div class="bt"><div class="bl">${e?'<button class="tr" onclick="de()">🗑</button>':''}<label class="dp">📅 <span id="dl">${dl(d)}</span><input type="date" id="fd" value="${d}" onchange="$('#dl').textContent=dl(this.value)"></label></div><button class="ok" onclick="se()"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div></div><div class="kp" id="kp"><div class="kr">${['÷','×','−','+','='].map(k=>`<button class="${k=='='?'eq':''}" onclick="kk('${k}')">${k}</button>`).join('')}</div><div class="kd">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button onclick="kk('${k}')">${k}</button>`).join('')}</div></div></div>`;
+ad();const o=$('#ch .on');if(o)o.scrollIntoView({inline:'center',block:'nearest'})}
+function se(){const a=ev(),d=$('#fd').value;if(!(a>0)||!d)return;if(!F.cat)return alert('Оберіть категорію');
+const r={id:F.id||uid(),date:d,amount:a,cat:F.cat,note:$('#fn').value.trim()};
 if(F.id)S.exp[S.exp.findIndex(x=>x.id==F.id)]=r;else S.exp.push(r);save();M=d.slice(0,7);cl();R()}
 function de(){if(confirm('Видалити запис?')){S.exp=S.exp.filter(x=>x.id!=F.id);save();cl();R()}}
 function C(){return `<div class="head"><h1>Категорії</h1><button onclick="oc()">+ Нова</button></div><small>Ліміт діє щомісяця, залишок — за ${MN[+M.slice(5)-1].toLowerCase()}</small>`+(S.cats.map(c=>{const s=spent(c,M);return `<section class="card row" style="--c:${c.color};margin-left:0;border-left-width:5px" onclick="oc('${c.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(c.name)}</b>${c.desc?`<small>${esc(c.desc)}</small>`:''}${c.limit>0?`${bar(c,M)}<small class="${s>c.limit?'ov':''}">${s>c.limit?'перевищено на '+money(s-c.limit):'залишилось '+money(c.limit-s)} з ${money(c.limit)}</small>`:'<small>без ліміту</small>'}</div></section>`}).join('')||'<div class="empty">Категорій ще немає</div>')}
@@ -120,7 +144,7 @@ const by=m=>{const o={};monthExp(m).forEach(e=>o[e.cat]=(o[e.cat]||0)+e.amount);
 const D=ms.map(m=>({m,by:by(m),t:sum(monthExp(m))})),mx=Math.max(1,...D.map(d=>d.t)),W=340,B=170,bw=38,gp=(W-6*bw)/7;
 const svg=D.map((d,i)=>{const x=gp+i*(bw+gp);let y=B;const ids=[...S.cats.map(c=>c.id),''];
 const r=ids.map(id=>{const v=d.by[id]||0;if(!v)return'';const h=v/mx*(B-30);y-=h;return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${cat(id).color}" opacity="${d.m==CM?1:.5}"/>`}).join('');
-return `<g onclick="CM='${d.m}';R()">${r}<text x="${x+bw/2}" y="${y-5}" font-size="11" text-anchor="middle" fill="#2b2418">${d.t?kf(d.t):''}</text><text x="${x+bw/2}" y="${B+16}" font-size="12" text-anchor="middle" fill="${d.m==CM?'#d98b1c':'#8a7d68'}" font-weight="${d.m==CM?700:400}">${MS[+d.m.slice(5)-1]}</text><rect x="${x-gp/2}" y="0" width="${bw+gp}" height="${B+24}" fill="transparent"/></g>`}).join('');
+return `<g onclick="CM='${d.m}';R()">${r}<text x="${x+bw/2}" y="${y-5}" font-size="11" text-anchor="middle" fill="#1b2a41">${d.t?kf(d.t):''}</text><text x="${x+bw/2}" y="${B+16}" font-size="12" text-anchor="middle" fill="${d.m==CM?'#2f6fd0':'#6b7f99'}" font-weight="${d.m==CM?700:400}">${MS[+d.m.slice(5)-1]}</text><rect x="${x-gp/2}" y="0" width="${bw+gp}" height="${B+24}" fill="transparent"/></g>`}).join('');
 const cur=D.find(d=>d.m==CM)||D[5],pi=ms.indexOf(CM),prev=pi>0?D[pi-1].t:0,dl=prev&&cur.t?Math.round((cur.t-prev)/prev*100):null;
 const ids=Object.keys(cur.by).sort((a,b)=>cur.by[b]-cur.by[a]);
 return `<div class="head"><h1>Графік</h1></div><section class="card"><h3>Витрати за 6 місяців</h3><svg viewBox="0 0 ${W} ${B+26}" width="100%">${svg}</svg><small>Торкніться стовпчика, щоб побачити деталі</small></section>
