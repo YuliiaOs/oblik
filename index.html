@@ -1,0 +1,137 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>облік</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#f4ecda">
+<link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="облік">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#f4ecda;--ink:#2b2418;--mut:#8a7d68;--amb:#d98b1c;--line:#e6d9bd;--red:#c4402f}
+body{margin:0;background:var(--bg) repeating-linear-gradient(transparent 0 31px,#eadfc6 31px 32px) fixed;color:var(--ink);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 10px) 14px calc(150px + env(safe-area-inset-bottom))}
+h1,h2,h3,.big,.mn b{font-family:"Iowan Old Style",Georgia,serif;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+small,.mut{color:var(--mut)}
+.top{text-align:center;padding:6px 0}
+.mn{display:flex;align-items:center;justify-content:center;gap:6px}
+.mn b{min-width:170px;font-size:1.15rem}
+.mn button{width:44px;height:44px;border:0;background:none;font-size:1.6rem;color:var(--amb)}
+.big{font-size:2.5rem;font-weight:700;letter-spacing:-.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 1px 0 var(--line),0 8px 16px -12px rgba(90,60,10,.4)}
+.card.np{padding:2px 12px}
+.card h3{font-size:1.05rem;margin-bottom:8px}
+.lr{padding:7px 0}.lt{display:flex;justify-content:space-between;gap:8px}
+.pb{height:7px;background:#f1e8d3;border-radius:5px;overflow:hidden;margin-top:5px}.pb i{display:block;height:100%;border-radius:5px}
+.ov{color:var(--red)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#e9dec4;border-radius:12px;padding:3px;margin:14px 0 10px}
+.seg button{border:0;background:none;padding:10px;border-radius:10px;font-size:.95rem}
+.seg .on{background:#fff;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+input{width:100%;font-size:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit}
+input:focus{outline:2px solid var(--amb);border-color:transparent}
+.dh{display:flex;justify-content:space-between;margin:16px 4px 6px;font-size:.88rem;color:var(--mut)}
+.dh b{font-weight:600;color:var(--ink)}
+.row{display:flex;align-items:center;gap:11px;padding:11px 0 11px 10px;border-bottom:1px dashed var(--line);border-left:5px solid var(--c);margin-left:-12px;padding-left:12px;min-height:60px}
+.row:last-child{border-bottom:0}
+.ic{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;background:color-mix(in srgb,var(--c) 22%,#fff)}
+.tx{flex:1;min-width:0}.tx b,.tx small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.amt{white-space:nowrap;font-weight:600}
+.empty{text-align:center;color:var(--mut);padding:36px 10px}
+#fab{position:fixed;right:max(16px,calc(50% - 244px));bottom:calc(76px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;border:0;background:var(--amb);color:#fff;font-size:2rem;box-shadow:0 8px 18px -4px rgba(150,90,0,.6);display:flex;align-items:center;justify-content:center;z-index:5}
+#tabs{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);background:#fffaf0;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
+#tabs button{border:0;background:none;padding:9px 0 8px;font-size:.74rem;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px}
+#tabs button span{font-size:1.4rem;filter:grayscale(1);opacity:.7}
+#tabs .on{color:var(--amb);font-weight:700}#tabs .on span{filter:none;opacity:1}
+.sh{position:fixed;inset:0;background:rgba(43,36,24,.45);display:flex;align-items:flex-end;z-index:20}
+.pn{width:100%;max-width:520px;margin:0 auto;background:#fffaf0;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+.pn h2{margin-bottom:6px}
+.pn label{display:block;font-size:.85rem;color:var(--mut);margin:12px 0 5px}.pn label input{margin-top:5px;color:var(--ink)}
+.amtl{display:flex!important;align-items:center;gap:8px}.amtl input{font:700 2.1rem Georgia,serif;border:0;border-bottom:2px solid var(--amb);border-radius:0;background:none;padding:6px 0}.amtl span{font-size:1.8rem;color:var(--amb)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1.5px solid var(--c);background:#fff;border-radius:20px;padding:9px 13px;min-height:42px}
+.chip.on{background:var(--c);color:#fff}
+.grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.grid button{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:1.3rem}
+.grid .on{border-color:var(--amb);background:#fdf0d5}
+.grid .sw{border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}.grid .sw.on{box-shadow:0 0 0 3px var(--ink)}
+.acts{display:flex;gap:10px;margin-top:18px}
+.acts button{flex:1;min-height:50px;border-radius:12px;border:0;font-weight:600}
+.pr{background:var(--amb);color:#fff}.dg{background:#f6dcd6;color:var(--red);flex:.6!important}
+.btn{display:block;width:100%;min-height:48px;border-radius:12px;border:1.5px solid var(--amb);background:#fff;color:var(--amb);font-weight:600;margin-top:8px}
+.head{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+.head h1{font-size:1.6rem}.head button{border:0;background:var(--amb);color:#fff;border-radius:12px;padding:11px 15px;font-weight:600;min-height:44px}
+svg text{font-family:system-ui,sans-serif}
+</style></head><body><main id="app"></main>
+<button id="fab" onclick="oe()" aria-label="Додати витрату">+</button>
+<nav id="tabs"><button data-t="h" onclick="tb('h')"><span>🧾</span>Витрати</button><button data-t="c" onclick="tb('c')"><span>🏷️</span>Категорії</button><button data-t="g" onclick="tb('g')"><span>📊</span>Графік</button></nav>
+<div id="ov"></div>
+<script>
+const $=s=>document.querySelector(s),K='oblik.v1',p=n=>String(n).padStart(2,'0');
+const COL=['#d98b1c','#c4572f','#b83a5e','#7a5aa6','#3f7ac4','#2f9a8a','#5d9a3a','#7d6b5a'];
+const ICO=['🛒','🚌','🏠','💊','🎬','🍽️','☕','👕','🎁','📱','🐾','✈️','📚','💇','🏋️','🔧','🚗','💡','👶','🎮','🧾','💰'];
+const MN=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],MS=['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
+const iso=d=>d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()),today=()=>iso(new Date());
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!S||!S.cats)S={cats:[['c1','Продукти','🛒',5],['c2','Транспорт','🚌',4],['c3','Дім','🏠',0],['c4',"Здоров'я",'💊',2],['c5','Розваги','🎬',3],['c6','Інше','🧾',7]].map(a=>({id:a[0],name:a[1],desc:'',icon:a[2],color:COL[a[3]],limit:0})),exp:[]};
+const save=()=>localStorage.setItem(K,JSON.stringify(S));
+let T='h',V='d',Q='',M=today().slice(0,7),CM=M,F={};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=n=>n.toLocaleString('uk-UA',{maximumFractionDigits:2})+' ₴';
+const cat=id=>S.cats.find(c=>c.id==id)||{id:'',name:'Без категорії',icon:'❔',color:'#999',limit:0};
+const sum=a=>a.reduce((s,e)=>s+e.amount,0),monthExp=m=>S.exp.filter(e=>e.date.startsWith(m)),spent=(c,m)=>sum(monthExp(m).filter(e=>e.cat==c.id));
+const mname=m=>MN[+m.slice(5)-1]+' '+m.slice(0,4);
+const fd=d=>{if(d==today())return'Сьогодні';const y=new Date();y.setDate(y.getDate()-1);if(d==iso(y))return'Вчора';return new Date(d+'T00:00').toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'})};
+const sd=d=>new Date(d+'T00:00').toLocaleDateString('uk-UA',{day:'numeric',month:'short'});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const bar=(c,m)=>{const s=spent(c,m);return `<div class="pb"><i style="width:${Math.min(100,s/c.limit*100)}%;background:${s>c.limit?'var(--red)':c.color}"></i></div>`};
+const sheet=h=>{$('#ov').innerHTML=`<div class="sh" onclick="if(event.target==this)cl()"><div class="pn">${h}</div></div>`},cl=()=>$('#ov').innerHTML='';
+function tb(t){T=t;R();scrollTo(0,0)}
+function R(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==T));$('#app').innerHTML=T=='h'?H():T=='c'?C():G();if(T=='h')L();$('#fab').style.display=T=='h'?'flex':'none'}
+function mv(d){let y=+M.slice(0,4),m=+M.slice(5)+d;if(m<1){m=12;y--}if(m>12){m=1;y++}M=y+'-'+p(m);R()}
+function H(){const lc=S.cats.filter(c=>c.limit>0);
+return `<div class="top"><div class="mn"><button onclick="mv(-1)">‹</button><b>${mname(M)}</b><button onclick="mv(1)">›</button></div><small>витрачено за місяць</small><div class="big">${money(sum(monthExp(M)))}</div></div>
+<section class="card"><h3>Залишок лімітів</h3>${lc.length?lc.map(c=>{const s=spent(c,M);return `<div class="lr"><div class="lt"><span>${c.icon} ${esc(c.name)}</span><b class="${s>c.limit?'ov':''}">${s>c.limit?'−':''}${money(Math.abs(c.limit-s))}</b></div>${bar(c,M)}</div>`}).join(''):'<small>Задайте ліміти у вкладці «Категорії»</small>'}</section>
+<div class="seg"><button class="${V=='d'?'on':''}" onclick="V='d';R()">За датами</button><button class="${V=='c'?'on':''}" onclick="V='c';R()">За категоріями</button></div>
+<input id="q" type="search" placeholder="🔍  Пошук у записах (по всіх місяцях)" value="${esc(Q)}" oninput="Q=this.value;L()"><div id="list"></div>`}
+const row=(e,sub)=>{const c=cat(e.cat);return `<div class="row" style="--c:${c.color}" onclick="oe('${e.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(e.note||c.name)}</b><small>${esc(c.name)}${sub?' · '+sd(e.date):''}</small></div><span class="amt">−${money(e.amount)}</span></div>`};
+function L(){const q=Q.trim().toLowerCase(),terms=q.split(/\s+/).filter(Boolean);
+const a=(terms.length?S.exp.filter(e=>{const h=(e.note+' '+cat(e.cat).name+' '+e.amount).toLowerCase();return terms.every(t=>h.includes(t))}):monthExp(M)).sort((x,y)=>x.date<y.date?1:x.date>y.date?-1:y.id>x.id?1:-1);
+let h='';if(!a.length)h=`<div class="empty">${terms.length?'Нічого не знайдено':'Записів за цей місяць немає.<br>Натисніть «+», щоб додати витрату'}</div>`;
+else if(V=='d'){const g={};a.forEach(e=>(g[e.date]=g[e.date]||[]).push(e));h=Object.keys(g).map(d=>`<div class="dh"><b>${fd(d)}</b><span>${money(sum(g[d]))}</span></div><div class="card np">${g[d].map(e=>row(e,terms.length)).join('')}</div>`).join('')}
+else{const ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>sum(a.filter(e=>e.cat==y))-sum(a.filter(e=>e.cat==x)));h=ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id);return `<div class="dh"><b>${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}</span></div><div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}).join('')}
+$('#list').innerHTML=h}
+const chips=()=>S.cats.length?S.cats.map(c=>`<button type="button" class="chip ${F.cat==c.id?'on':''}" style="--c:${c.color}" onclick="F.cat='${c.id}';$('#ch').innerHTML=chips()">${c.icon} ${esc(c.name)}</button>`).join(''):'<small>Спершу додайте категорію</small>';
+function oe(id){const e=id?S.exp.find(x=>x.id==id):null;F={id,cat:e?e.cat:(S.cats[0]||{}).id};
+sheet(`<h2>${e?'Редагувати запис':'Нова витрата'}</h2><label class="amtl"><input id="fa" inputmode="decimal" placeholder="0" value="${e?e.amount:''}"><span>₴</span></label><label>Дата<input id="fd" type="date" value="${e?e.date:today()}"></label><div class="chips" id="ch">${chips()}</div><label>Коментар<input id="fn" placeholder="необов'язково" value="${esc(e?e.note:'')}"></label><div class="acts">${e?'<button class="dg" onclick="de()">Видалити</button>':''}<button class="pr" onclick="se()">Зберегти</button></div>`);
+if(!e)setTimeout(()=>$('#fa').focus(),80)}
+function se(){const a=parseFloat($('#fa').value.replace(',','.')),d=$('#fd').value;
+if(!(a>0))return $('#fa').focus();if(!d)return $('#fd').focus();if(!F.cat)return alert('Оберіть категорію');
+const r={id:F.id||uid(),date:d,amount:Math.round(a*100)/100,cat:F.cat,note:$('#fn').value.trim()};
+if(F.id)S.exp[S.exp.findIndex(x=>x.id==F.id)]=r;else S.exp.push(r);save();M=d.slice(0,7);cl();R()}
+function de(){if(confirm('Видалити запис?')){S.exp=S.exp.filter(x=>x.id!=F.id);save();cl();R()}}
+function C(){return `<div class="head"><h1>Категорії</h1><button onclick="oc()">+ Нова</button></div><small>Ліміт діє щомісяця, залишок — за ${MN[+M.slice(5)-1].toLowerCase()}</small>`+(S.cats.map(c=>{const s=spent(c,M);return `<section class="card row" style="--c:${c.color};margin-left:0;border-left-width:5px" onclick="oc('${c.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(c.name)}</b>${c.desc?`<small>${esc(c.desc)}</small>`:''}${c.limit>0?`${bar(c,M)}<small class="${s>c.limit?'ov':''}">${s>c.limit?'перевищено на '+money(s-c.limit):'залишилось '+money(c.limit-s)} з ${money(c.limit)}</small>`:'<small>без ліміту</small>'}</div></section>`}).join('')||'<div class="empty">Категорій ще немає</div>')}
+const ig=()=>{$('#ig').innerHTML=ICO.map(i=>`<button type="button" class="${F.icon==i?'on':''}" onclick="F.icon='${i}';$('#ci').value='';ig()">${i}</button>`).join('');$('#cg').innerHTML=COL.map(c=>`<button type="button" class="sw ${F.color==c?'on':''}" style="background:${c}" onclick="F.color='${c}';ig()"></button>`).join('')};
+function oc(id){const c=id?cat(id):{};F={id,icon:c.icon||ICO[0],color:c.color||COL[0]};
+sheet(`<h2>${id?'Категорія':'Нова категорія'}</h2><label>Назва<input id="cn" value="${esc(c.name||'')}"></label><label>Опис<input id="cd" placeholder="необов'язково" value="${esc(c.desc||'')}"></label><label>Іконка</label><div class="grid" id="ig"></div><input id="ci" placeholder="або вставте свій емодзі" maxlength="4" oninput="F.icon=this.value.trim()||F.icon"><label>Колір</label><div class="grid" id="cg"></div><label>Ліміт на місяць, ₴<input id="cl" inputmode="decimal" placeholder="без ліміту" value="${c.limit||''}"></label><div class="acts">${id?'<button class="dg" onclick="dc()">Видалити</button>':''}<button class="pr" onclick="sc()">Зберегти</button></div>`);ig()}
+function sc(){const n=$('#cn').value.trim();if(!n)return $('#cn').focus();
+const r={id:F.id||uid(),name:n,desc:$('#cd').value.trim(),icon:F.icon,color:F.color,limit:Math.max(0,parseFloat($('#cl').value.replace(',','.'))||0)};
+if(F.id)S.cats[S.cats.findIndex(x=>x.id==F.id)]=r;else S.cats.push(r);save();cl();R()}
+function dc(){const n=S.exp.filter(e=>e.cat==F.id).length;if(confirm(n?`У категорії ${n} записів — вони залишаться як «Без категорії». Видалити?`:'Видалити категорію?')){S.cats=S.cats.filter(x=>x.id!=F.id);save();cl();R()}}
+const kf=n=>n>=1000?(n/1000).toFixed(n>=10000?0:1).replace('.0','')+'к':Math.round(n);
+function G(){const now=new Date(),ms=[];for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);ms.push(d.getFullYear()+'-'+p(d.getMonth()+1))}
+const by=m=>{const o={};monthExp(m).forEach(e=>o[e.cat]=(o[e.cat]||0)+e.amount);return o};
+const D=ms.map(m=>({m,by:by(m),t:sum(monthExp(m))})),mx=Math.max(1,...D.map(d=>d.t)),W=340,B=170,bw=38,gp=(W-6*bw)/7;
+const svg=D.map((d,i)=>{const x=gp+i*(bw+gp);let y=B;const ids=[...S.cats.map(c=>c.id),''];
+const r=ids.map(id=>{const v=d.by[id]||0;if(!v)return'';const h=v/mx*(B-30);y-=h;return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${cat(id).color}" opacity="${d.m==CM?1:.5}"/>`}).join('');
+return `<g onclick="CM='${d.m}';R()">${r}<text x="${x+bw/2}" y="${y-5}" font-size="11" text-anchor="middle" fill="#2b2418">${d.t?kf(d.t):''}</text><text x="${x+bw/2}" y="${B+16}" font-size="12" text-anchor="middle" fill="${d.m==CM?'#d98b1c':'#8a7d68'}" font-weight="${d.m==CM?700:400}">${MS[+d.m.slice(5)-1]}</text><rect x="${x-gp/2}" y="0" width="${bw+gp}" height="${B+24}" fill="transparent"/></g>`}).join('');
+const cur=D.find(d=>d.m==CM)||D[5],pi=ms.indexOf(CM),prev=pi>0?D[pi-1].t:0,dl=prev&&cur.t?Math.round((cur.t-prev)/prev*100):null;
+const ids=Object.keys(cur.by).sort((a,b)=>cur.by[b]-cur.by[a]);
+return `<div class="head"><h1>Графік</h1></div><section class="card"><h3>Витрати за 6 місяців</h3><svg viewBox="0 0 ${W} ${B+26}" width="100%">${svg}</svg><small>Торкніться стовпчика, щоб побачити деталі</small></section>
+<section class="card"><div class="lt"><h3>${mname(CM)}</h3><b>${money(cur.t)}</b></div>${dl!==null?`<small>${dl>0?'▲ на '+dl+'% більше':dl<0?'▼ на '+(-dl)+'% менше':'так само'}, ніж попереднього місяця (${money(prev)})</small>`:''}
+${ids.map(id=>{const c=cat(id),v=cur.by[id];return `<div class="lr"><div class="lt"><span>${c.icon} ${esc(c.name)}</span><b>${money(v)} <small>${Math.round(v/cur.t*100)}%</small></b></div><div class="pb"><i style="width:${v/cur.t*100}%;background:${c.color}"></i></div></div>`}).join('')||'<div class="empty">Немає даних</div>'}</section>
+<section class="card"><h3>Експорт</h3><small>Для аналізу в Excel або в ШІ. Файл завантажиться на телефон.</small><button class="btn" onclick="ex('csv')">Завантажити CSV</button><button class="btn" onclick="ex('json')">Завантажити JSON (з лімітами)</button></section>`}
+function ex(t){const n=e=>cat(e.cat).name,all=[...S.exp].sort((a,b)=>a.date<b.date?-1:1);let s;
+if(t=='csv')s='\ufeff'+[['Дата','Сума (грн)','Категорія','Коментар'],...all.map(e=>[e.date,e.amount,n(e),e.note])].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+else s=JSON.stringify({currency:'UAH',categories:S.cats.map(c=>({name:c.name,description:c.desc,monthly_limit:c.limit||null})),expenses:all.map(e=>({date:e.date,amount:e.amount,category:n(e),note:e.note}))},null,1);
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:t=='csv'?'text/csv;charset=utf-8':'application/json'}));a.download='oblik-'+today()+'.'+t;document.body.appendChild(a);a.click();a.remove()}
+R();
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+navigator.storage&&navigator.storage.persist&&navigator.storage.persist();
+</script></body></html>
