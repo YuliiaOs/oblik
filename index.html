@@ -64,7 +64,7 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 #ar{display:block;min-height:1.2em;margin:2px 0 0 32px}
 .cm{margin:10px 0 4px;display:flex;align-items:center;gap:10px;font-size:1.1rem}.cm input{border:0;background:none;padding:10px 0}.cm input:focus{outline:0}
 .bt{display:flex;justify-content:space-between;align-items:center;margin-top:6px}.bl{display:flex;gap:8px;align-items:center}
-.dp{position:relative;display:flex;align-items:center;gap:8px;background:#e8eff9;border:1px solid var(--line);border-radius:26px;padding:0 18px;height:52px;color:var(--mut);overflow:hidden}
+.dp{display:flex;align-items:center;gap:8px;background:#e8eff9;border:1px solid var(--line);border-radius:26px;padding:0 18px;height:52px;color:var(--mut)}
 .dp input{position:absolute;inset:0;opacity:0;width:100%;height:100%;padding:0;border:0}
 .tr{width:52px;height:52px;border-radius:50%;border:0;background:#fbe3df;font-size:1.2rem}
 .ok{width:62px;height:62px;border-radius:50%;border:0;background:var(--amb);display:grid;place-items:center}
@@ -72,6 +72,19 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 .kr{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.kd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .kp button{border:0;border-radius:14px;background:#e8eff9;font-size:1.5rem;font-weight:600;height:min(9vh,60px)}
 .kr button{height:min(7vh,48px);font-size:1.3rem;color:var(--amb)}.kp .eq{background:var(--amb);color:#fff}
+.grid label.sw{position:relative;width:46px;height:46px;border-radius:12px;display:block;overflow:hidden;margin:0!important}
+.grid label.sw input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0!important;padding:0;border:0}
+.cm{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 14px;min-height:52px;margin:12px 0 6px}.cm input{flex:1;min-width:0;height:50px;padding:0}
+.dp{font-size:1rem}
+.cb{position:fixed;inset:0;background:rgba(20,30,50,.5);display:flex;align-items:center;justify-content:center;z-index:30}
+.cp{width:min(92vw,350px);background:#f7faff;border-radius:22px;padding:14px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.ch b{font-size:1.05rem}
+.ch button{width:44px;height:44px;border:0;background:none;font-size:1.6rem;color:var(--amb)}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cg i{font-style:normal;font-size:.75rem;color:var(--mut);padding:4px 0}
+.cg button{height:42px;border:0;border-radius:50%;background:none;font-size:1rem;color:var(--ink)}
+.cg .td{box-shadow:inset 0 0 0 1.5px var(--amb);color:var(--amb)}.cg .on{background:var(--amb);color:#fff;box-shadow:none}
+.cf{display:flex;justify-content:space-between;margin-top:8px}.cf button{border:0;background:none;color:var(--amb);font-weight:600;padding:12px 8px}
 svg text{font-family:system-ui,sans-serif}
 </style></head><body><main id="app"></main>
 <button id="fab" onclick="oe()" aria-label="Додати витрату">+</button>
@@ -79,7 +92,7 @@ svg text{font-family:system-ui,sans-serif}
 <div id="ov"></div>
 <script>
 const $=s=>document.querySelector(s),K='oblik.v1',p=n=>String(n).padStart(2,'0');
-const COL=['#2f6fd0','#1e4a9c','#5ba3e8','#0e8aa8','#4b4fc4','#8db4e2','#12356b','#3aa0b8'],OLDC=['#d98b1c','#c4572f','#b83a5e','#7a5aa6','#3f7ac4','#2f9a8a','#5d9a3a','#7d6b5a'];
+const COL=['#2f6fd0','#1e4a9c','#5ba3e8','#0e8aa8','#4b4fc4','#8db4e2','#12356b','#3aa0b8','#2f9a6a','#7bb83d','#e0a21c','#e8782f','#d64550','#c2478a','#8a56c7','#6b7f99'],OLDC=['#d98b1c','#c4572f','#b83a5e','#7a5aa6','#3f7ac4','#2f9a8a','#5d9a3a','#7d6b5a'];
 const ICO=['🛒','🚌','🏠','💊','🎬','🍽️','☕','👕','🎁','📱','🐾','✈️','📚','💇','🏋️','🔧','🚗','💡','👶','🎮','🧾','💰'];
 const MN=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],MS=['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
 const iso=d=>d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()),today=()=>iso(new Date());
@@ -97,7 +110,7 @@ const fd=d=>{if(d==today())return'Сьогодні';const y=new Date();y.setDate
 const sd=d=>new Date(d+'T00:00').toLocaleDateString('uk-UA',{day:'numeric',month:'short'});
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const bar=(c,m)=>{const s=spent(c,m);return `<div class="pb"><i style="width:${Math.min(100,s/c.limit*100)}%;background:${s>c.limit?'var(--red)':c.color}"></i></div>`};
-const sheet=h=>{$('#ov').innerHTML=`<div class="sh" onclick="if(event.target==this)cl()"><div class="pn">${h}</div></div>`},cl=()=>$('#ov').innerHTML='';
+const sheet=h=>{$('#ov').innerHTML=`<div class="sh" onpointerdown="if(event.target==this)cl()"><div class="pn">${h}</div></div>`},cl=()=>$('#ov').innerHTML='';
 function tb(t){T=t;R();scrollTo(0,0)}
 function R(){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==T));$('#app').innerHTML=T=='h'?H():T=='c'?C():G();if(T=='h')L();$('#fab').style.display=T=='h'?'flex':'none'}
 function mv(d){let y=+M.slice(0,4),m=+M.slice(5)+d;if(m<1){m=12;y--}if(m>12){m=1;y++}M=y+'-'+p(m);R()}
@@ -123,15 +136,22 @@ else if(OP.includes(k)){if(!X)return;X=OP.includes(X.slice(-1))?X.slice(0,-1)+k:
 else if(k=='.'){const t=X.split(/[+−×÷]/).pop();if(t.includes('.'))return;X+=t?'.':'0.'}
 else{const t=X.split(/[+−×÷]/).pop();X=t=='0'?X.slice(0,-1)+k:X+k}
 ad()}
+function cal(y,m){const o=new Date(y,m,1),off=(o.getDay()+6)%7,n=new Date(y,m+1,0).getDate(),sel=$('#fd').value,t=today();
+let h=`<div class="cp"><div class="ch"><button onclick="cal(${m?y:y-1},${m?m-1:11})">‹</button><b>${MN[m]} ${y}</b><button onclick="cal(${m<11?y:y+1},${m<11?m+1:0})">›</button></div><div class="cg">${['пн','вт','ср','чт','пт','сб','нд'].map(x=>`<i>${x}</i>`).join('')}${'<span></span>'.repeat(off)}`;
+for(let d=1;d<=n;d++){const v=y+'-'+p(m+1)+'-'+p(d);h+=`<button class="${v==sel?'on':v==t?'td':''}" onclick="pd('${v}')">${d}</button>`}
+h+=`</div><div class="cf"><button onclick="pd(today())">Сьогодні</button><button onclick="cc()">Закрити</button></div></div>`;
+let c=$('#cal');if(!c){c=document.createElement('div');c.id='cal';c.className='cb';c.onpointerdown=e=>{if(e.target==c)cc()};$('#ov').appendChild(c)}c.innerHTML=h}
+const cc=()=>{const c=$('#cal');if(c)c.remove()},ocal=()=>{const d=new Date($('#fd').value+'T00:00');cal(d.getFullYear(),d.getMonth())};
+function pd(v){$('#fd').value=v;$('#dl').textContent=dl(v);cc()}
 function oe(id){const e=id?S.exp.find(x=>x.id==id):null,d=e?e.date:today();F={id,cat:e?e.cat:(S.cats[0]||{}).id};X=e?String(e.amount):'';
-$('#ov').innerHTML=`<div class="sh" onclick="if(event.target==this)cl()"><div class="xc"><div class="amr"><span>₴</span><div id="ad"></div></div><small id="ar"></small><div class="chips" id="ch">${chips()}</div><label class="cm"><span>💬</span><input id="fn" placeholder="Коментар" value="${esc(e?e.note:'')}" onfocus="$('#kp').style.display='none'" onblur="setTimeout(function(){var k=$('#kp');if(k)k.style.display=''},200)"></label><div class="bt"><div class="bl">${e?'<button class="tr" onclick="de()">🗑</button>':''}<label class="dp">📅 <span id="dl">${dl(d)}</span><input type="date" id="fd" value="${d}" onchange="$('#dl').textContent=dl(this.value)"></label></div><button class="ok" onclick="se()"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div></div><div class="kp" id="kp"><div class="kr">${['÷','×','−','+','='].map(k=>`<button class="${k=='='?'eq':''}" onclick="kk('${k}')">${k}</button>`).join('')}</div><div class="kd">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button onclick="kk('${k}')">${k}</button>`).join('')}</div></div></div>`;
+$('#ov').innerHTML=`<div class="sh" onpointerdown="if(event.target==this)cl()"><div class="xc"><div class="amr"><span>₴</span><div id="ad"></div></div><small id="ar"></small><div class="chips" id="ch">${chips()}</div><label class="cm"><span>💬</span><input id="fn" placeholder="Коментар" value="${esc(e?e.note:'')}" onfocus="$('#kp').style.display='none'" onblur="setTimeout(function(){var k=$('#kp');if(k)k.style.display=''},200)"></label><div class="bt"><div class="bl">${e?'<button class="tr" onclick="de()">🗑</button>':''}<button class="dp" onclick="ocal()">📅 <span id="dl">${dl(d)}</span></button><input type="hidden" id="fd" value="${d}"></div><button class="ok" onclick="se()"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div></div><div class="kp" id="kp"><div class="kr">${['÷','×','−','+','='].map(k=>`<button class="${k=='='?'eq':''}" onclick="kk('${k}')">${k}</button>`).join('')}</div><div class="kd">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button onclick="kk('${k}')">${k}</button>`).join('')}</div></div></div>`;
 ad();const o=$('#ch .on');if(o)o.scrollIntoView({inline:'center',block:'nearest'})}
 function se(){const a=ev(),d=$('#fd').value;if(!(a>0)||!d)return;if(!F.cat)return alert('Оберіть категорію');
 const r={id:F.id||uid(),date:d,amount:a,cat:F.cat,note:$('#fn').value.trim()};
 if(F.id)S.exp[S.exp.findIndex(x=>x.id==F.id)]=r;else S.exp.push(r);save();M=d.slice(0,7);cl();R()}
 function de(){if(confirm('Видалити запис?')){S.exp=S.exp.filter(x=>x.id!=F.id);save();cl();R()}}
 function C(){return `<div class="head"><h1>Категорії</h1><button onclick="oc()">+ Нова</button></div><small>Ліміт діє щомісяця, залишок — за ${MN[+M.slice(5)-1].toLowerCase()}</small>`+(S.cats.map(c=>{const s=spent(c,M);return `<section class="card row" style="--c:${c.color};margin-left:0;border-left-width:5px" onclick="oc('${c.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(c.name)}</b>${c.desc?`<small>${esc(c.desc)}</small>`:''}${c.limit>0?`${bar(c,M)}<small class="${s>c.limit?'ov':''}">${s>c.limit?'перевищено на '+money(s-c.limit):'залишилось '+money(c.limit-s)} з ${money(c.limit)}</small>`:'<small>без ліміту</small>'}</div></section>`}).join('')||'<div class="empty">Категорій ще немає</div>')}
-const ig=()=>{$('#ig').innerHTML=ICO.map(i=>`<button type="button" class="${F.icon==i?'on':''}" onclick="F.icon='${i}';$('#ci').value='';ig()">${i}</button>`).join('');$('#cg').innerHTML=COL.map(c=>`<button type="button" class="sw ${F.color==c?'on':''}" style="background:${c}" onclick="F.color='${c}';ig()"></button>`).join('')};
+const ig=()=>{$('#ig').innerHTML=ICO.map(i=>`<button type="button" class="${F.icon==i?'on':''}" onclick="F.icon='${i}';$('#ci').value='';ig()">${i}</button>`).join('');const cu=!COL.includes(F.color);$('#cg').innerHTML=COL.map(c=>`<button type="button" class="sw ${F.color==c?'on':''}" style="background:${c}" onclick="F.color='${c}';ig()"></button>`).join('')+`<label class="sw cu ${cu?'on':''}" style="background:${cu?F.color:'conic-gradient(#e44,#ee4,#4e4,#4ee,#44e,#e4e,#e44)'}"><input type="color" value="${cu?F.color:'#2f6fd0'}" onchange="F.color=this.value;ig()"></label>`};
 function oc(id){const c=id?cat(id):{};F={id,icon:c.icon||ICO[0],color:c.color||COL[0]};
 sheet(`<h2>${id?'Категорія':'Нова категорія'}</h2><label>Назва<input id="cn" value="${esc(c.name||'')}"></label><label>Опис<input id="cd" placeholder="необов'язково" value="${esc(c.desc||'')}"></label><label>Іконка</label><div class="grid" id="ig"></div><input id="ci" placeholder="або вставте свій емодзі" maxlength="4" oninput="F.icon=this.value.trim()||F.icon"><label>Колір</label><div class="grid" id="cg"></div><label>Ліміт на місяць, ₴<input id="cl" inputmode="decimal" placeholder="без ліміту" value="${c.limit||''}"></label><div class="acts">${id?'<button class="dg" onclick="dc()">Видалити</button>':''}<button class="pr" onclick="sc()">Зберегти</button></div>`);ig()}
 function sc(){const n=$('#cn').value.trim();if(!n)return $('#cn').focus();
