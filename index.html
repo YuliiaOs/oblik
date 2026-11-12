@@ -85,6 +85,8 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 .cg button{height:42px;border:0;border-radius:50%;background:none;font-size:1rem;color:var(--ink)}
 .cg .td{box-shadow:inset 0 0 0 1.5px var(--amb);color:var(--amb)}.cg .on{background:var(--amb);color:#fff;box-shadow:none}
 .cf{display:flex;justify-content:space-between;margin-top:8px}.cf button{border:0;background:none;color:var(--amb);font-weight:600;padding:12px 8px}
+.hd{flex:none;width:44px;align-self:stretch;margin-left:4px;display:grid;place-items:center;color:var(--mut);touch-action:none;cursor:grab}
+.cc.drag{position:relative;z-index:5;box-shadow:0 14px 28px -8px rgba(20,50,100,.45);cursor:grabbing}
 svg text{font-family:system-ui,sans-serif}
 </style></head><body><main id="app"></main>
 <button id="fab" onclick="oe()" aria-label="Додати витрату">+</button>
@@ -123,7 +125,7 @@ function L(){const q=Q.trim().toLowerCase(),terms=q.split(/\s+/).filter(Boolean)
 const a=(terms.length?S.exp.filter(e=>{const h=(e.note+' '+cat(e.cat).name+' '+e.amount).toLowerCase();return terms.every(t=>h.includes(t))}):monthExp(M)).sort((x,y)=>x.date<y.date?1:x.date>y.date?-1:y.id>x.id?1:-1);
 let h='';if(!a.length)h=`<div class="empty">${terms.length?'Нічого не знайдено':'Записів за цей місяць немає.<br>Натисніть «+», щоб додати витрату'}</div>`;
 else if(V=='d'){const g={};a.forEach(e=>(g[e.date]=g[e.date]||[]).push(e));h=Object.keys(g).map(d=>`<div class="dh"><b>${fd(d)}</b><span>${money(sum(g[d]))}</span></div><div class="card np">${g[d].map(e=>row(e,terms.length)).join('')}</div>`).join('')}
-else{const ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>sum(a.filter(e=>e.cat==y))-sum(a.filter(e=>e.cat==x)));h=ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id);return `<div class="dh"><b>${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}</span></div><div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}).join('')}
+else{const oi=id=>{const i=S.cats.findIndex(c=>c.id==id);return i<0?999:i},ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>oi(x)-oi(y));h=ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id);return `<div class="dh"><b>${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}</span></div><div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}).join('')}
 $('#list').innerHTML=h}
 const chips=()=>S.cats.length?S.cats.map(c=>`<button type="button" class="ct ${F.cat==c.id?'on':''}" style="--c:${c.color}" onclick="F.cat='${c.id}';$('#ch').innerHTML=chips()"><span class="ci">${c.icon}</span><small>${esc(c.name)}</small></button>`).join(''):'<small>Спершу додайте категорію</small>';
 let X='';const OP='+−×÷';
@@ -150,7 +152,7 @@ function se(){const a=ev(),d=$('#fd').value;if(!(a>0)||!d)return;if(!F.cat)retur
 const r={id:F.id||uid(),date:d,amount:a,cat:F.cat,note:$('#fn').value.trim()};
 if(F.id)S.exp[S.exp.findIndex(x=>x.id==F.id)]=r;else S.exp.push(r);save();M=d.slice(0,7);cl();R()}
 function de(){if(confirm('Видалити запис?')){S.exp=S.exp.filter(x=>x.id!=F.id);save();cl();R()}}
-function C(){return `<div class="head"><h1>Категорії</h1><button onclick="oc()">+ Нова</button></div><small>Ліміт діє щомісяця, залишок — за ${MN[+M.slice(5)-1].toLowerCase()}</small>`+(S.cats.map(c=>{const s=spent(c,M);return `<section class="card row" style="--c:${c.color};margin-left:0;border-left-width:5px" onclick="oc('${c.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(c.name)}</b>${c.desc?`<small>${esc(c.desc)}</small>`:''}${c.limit>0?`${bar(c,M)}<small class="${s>c.limit?'ov':''}">${s>c.limit?'перевищено на '+money(s-c.limit):'залишилось '+money(c.limit-s)} з ${money(c.limit)}</small>`:'<small>без ліміту</small>'}</div></section>`}).join('')||'<div class="empty">Категорій ще немає</div>')}
+function C(){return `<div class="head"><h1>Категорії</h1><button onclick="oc()">+ Нова</button></div><small>Ліміт діє щомісяця, залишок — за ${MN[+M.slice(5)-1].toLowerCase()}. Щоб змінити порядок, перетягуйте значок справа.</small><div id="cl">`+(S.cats.map(c=>{const s=spent(c,M);return `<section class="card row cc" data-id="${c.id}" style="--c:${c.color};margin-left:0;border-left-width:5px" onclick="oc('${c.id}')"><span class="ic">${c.icon}</span><div class="tx"><b>${esc(c.name)}</b>${c.desc?`<small>${esc(c.desc)}</small>`:''}${c.limit>0?`${bar(c,M)}<small class="${s>c.limit?'ov':''}">${s>c.limit?'перевищено на '+money(s-c.limit):'залишилось '+money(c.limit-s)} з ${money(c.limit)}</small>`:'<small>без ліміту</small>'}</div><span class="hd" onclick="event.stopPropagation()"><svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><circle cx="6" cy="4" r="1.7"/><circle cx="12" cy="4" r="1.7"/><circle cx="6" cy="9" r="1.7"/><circle cx="12" cy="9" r="1.7"/><circle cx="6" cy="14" r="1.7"/><circle cx="12" cy="14" r="1.7"/></svg></span></section>`}).join('')||'<div class="empty">Категорій ще немає</div>')+'</div>'}
 const ig=()=>{$('#ig').innerHTML=ICO.map(i=>`<button type="button" class="${F.icon==i?'on':''}" onclick="F.icon='${i}';$('#ci').value='';ig()">${i}</button>`).join('');const cu=!COL.includes(F.color);$('#cg').innerHTML=COL.map(c=>`<button type="button" class="sw ${F.color==c?'on':''}" style="background:${c}" onclick="F.color='${c}';ig()"></button>`).join('')+`<label class="sw cu ${cu?'on':''}" style="background:${cu?F.color:'conic-gradient(#e44,#ee4,#4e4,#4ee,#44e,#e4e,#e44)'}"><input type="color" value="${cu?F.color:'#2f6fd0'}" onchange="F.color=this.value;ig()"></label>`};
 function oc(id){const c=id?cat(id):{};F={id,icon:c.icon||ICO[0],color:c.color||COL[0]};
 sheet(`<h2>${id?'Категорія':'Нова категорія'}</h2><label>Назва<input id="cn" value="${esc(c.name||'')}"></label><label>Опис<input id="cd" placeholder="необов'язково" value="${esc(c.desc||'')}"></label><label>Іконка</label><div class="grid" id="ig"></div><input id="ci" placeholder="або вставте свій емодзі" maxlength="4" oninput="F.icon=this.value.trim()||F.icon"><label>Колір</label><div class="grid" id="cg"></div><label>Ліміт на місяць, ₴<input id="cl" inputmode="decimal" placeholder="без ліміту" value="${c.limit||''}"></label><div class="acts">${id?'<button class="dg" onclick="dc()">Видалити</button>':''}<button class="pr" onclick="sc()">Зберегти</button></div>`);ig()}
@@ -186,6 +188,18 @@ const c=mk(String(r[2]||'').trim()||'Інше'),note=String(r[3]||'').trim();
 if(old.some(e=>e.date==d&&e.amount==a&&e.cat==c.id&&e.note==note)){skip++;return}
 S.exp.push({id:uid(),date:d,amount:a,cat:c.id,note});add++;if(d>last)last=d});
 save();if(last)M=last.slice(0,7);R();alert('Додано записів: '+add+', нових категорій: '+nc+(skip?', пропущено: '+skip:''))}catch(e){alert('Не вдалося прочитати файл')}};rd.readAsText(f);inp.value=''}
+let dg=null;
+document.addEventListener('pointerdown',e=>{const h=e.target.closest&&e.target.closest('.hd');if(!h)return;e.preventDefault();const c=h.closest('.cc');dg={c,l:c.parentElement,off:e.clientY-c.getBoundingClientRect().top};c.classList.add('drag')});
+document.addEventListener('pointermove',e=>{if(!dg)return;const{c,l}=dg;
+if(e.clientY<90)scrollBy(0,-14);else if(e.clientY>innerHeight-140)scrollBy(0,14);
+c.style.transform='none';const nat=c.getBoundingClientRect().top,want=e.clientY-dg.off,mid=want+c.offsetHeight/2;
+const sib=[...l.querySelectorAll('.cc')].filter(x=>x!=c);let ref=null;
+for(const x of sib){const r=x.getBoundingClientRect();if(mid<r.top+r.height/2){ref=x;break}}
+if(ref!=c.nextElementSibling&&!(ref==null&&c.nextElementSibling==null)){l.insertBefore(c,ref);c.style.transform='none';}
+c.style.transform='translateY('+(want-c.getBoundingClientRect().top)+'px)'});
+const dend=()=>{if(!dg)return;const{c,l}=dg;dg=null;const ids=[...l.querySelectorAll('.cc')].map(x=>x.dataset.id);
+S.cats.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));save();R()};
+document.addEventListener('pointerup',dend);document.addEventListener('pointercancel',dend);
 function ex(t){const n=e=>cat(e.cat).name,all=[...S.exp].sort((a,b)=>a.date<b.date?-1:1);let s;
 if(t=='csv')s='\ufeff'+[['Дата','Сума (грн)','Категорія','Коментар'],...all.map(e=>[e.date,e.amount,n(e),e.note])].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
 else s=JSON.stringify({currency:'UAH',categories:S.cats.map(c=>({name:c.name,description:c.desc,monthly_limit:c.limit||null})),expenses:all.map(e=>({date:e.date,amount:e.amount,category:n(e),note:e.note}))},null,1);
