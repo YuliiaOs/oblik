@@ -108,7 +108,7 @@ const sum=a=>a.reduce((s,e)=>s+e.amount,0),monthExp=m=>S.exp.filter(e=>e.date.st
 const mname=m=>MN[+m.slice(5)-1]+' '+m.slice(0,4);
 const fd=d=>{if(d==today())return'Сьогодні';const y=new Date();y.setDate(y.getDate()-1);if(d==iso(y))return'Вчора';return new Date(d+'T00:00').toLocaleDateString('uk-UA',{weekday:'long',day:'numeric',month:'long'})};
 const sd=d=>new Date(d+'T00:00').toLocaleDateString('uk-UA',{day:'numeric',month:'short'});
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+let _u=0;const uid=()=>Date.now().toString(36)+(_u++).toString(36)+Math.random().toString(36).slice(2,4);
 const bar=(c,m)=>{const s=spent(c,m);return `<div class="pb"><i style="width:${Math.min(100,s/c.limit*100)}%;background:${s>c.limit?'var(--red)':c.color}"></i></div>`};
 const sheet=h=>{$('#ov').innerHTML=`<div class="sh" onpointerdown="if(event.target==this)cl()"><div class="pn">${h}</div></div>`},cl=()=>$('#ov').innerHTML='';
 function tb(t){T=t;R();scrollTo(0,0)}
@@ -170,7 +170,22 @@ const ids=Object.keys(cur.by).sort((a,b)=>cur.by[b]-cur.by[a]);
 return `<div class="head"><h1>Графік</h1></div><section class="card"><h3>Витрати за 6 місяців</h3><svg viewBox="0 0 ${W} ${B+26}" width="100%">${svg}</svg><small>Торкніться стовпчика, щоб побачити деталі</small></section>
 <section class="card"><div class="lt"><h3>${mname(CM)}</h3><b>${money(cur.t)}</b></div>${dl!==null?`<small>${dl>0?'▲ на '+dl+'% більше':dl<0?'▼ на '+(-dl)+'% менше':'так само'}, ніж попереднього місяця (${money(prev)})</small>`:''}
 ${ids.map(id=>{const c=cat(id),v=cur.by[id];return `<div class="lr"><div class="lt"><span>${c.icon} ${esc(c.name)}</span><b>${money(v)} <small>${Math.round(v/cur.t*100)}%</small></b></div><div class="pb"><i style="width:${v/cur.t*100}%;background:${c.color}"></i></div></div>`}).join('')||'<div class="empty">Немає даних</div>'}</section>
-<section class="card"><h3>Експорт</h3><small>Для аналізу в Excel або в ШІ. Файл завантажиться на телефон.</small><button class="btn" onclick="ex('csv')">Завантажити CSV</button><button class="btn" onclick="ex('json')">Завантажити JSON (з лімітами)</button></section>`}
+<section class="card"><h3>Експорт і відновлення</h3><small>Експорт — для Excel або ШІ. Відновлення читає CSV чи JSON, створені цим застосунком; повторні записи пропускаються.</small><button class="btn" onclick="ex('csv')">Завантажити CSV</button><button class="btn" onclick="ex('json')">Завантажити JSON (з лімітами)</button><button class="btn" onclick="$('#imp').click()">Відновити з файлу</button><input id="imp" type="file" accept=".csv,.json,text/csv,application/json,text/plain" style="display:none" onchange="im(this)"></section>`}
+function csv(t){t=t.replace(/^\ufeff/,'');const l=t.split('\n')[0],d=l.split(';').length>l.split(',').length?';':',',W=[];let r=[],c='',q=false;
+for(let i=0;i<t.length;i++){const h=t[i];if(q){if(h=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=h}else if(h=='"')q=true;else if(h==d){r.push(c);c=''}else if(h=='\n'||h=='\r'){if(h=='\r'&&t[i+1]=='\n')i++;r.push(c);c='';if(r.some(x=>x!==''))W.push(r);r=[]}else c+=h}
+r.push(c);if(r.some(x=>x!==''))W.push(r);return W}
+function im(inp){const f=inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const t=rd.result;let rows=[],cats=[];
+if(f.name.toLowerCase().endsWith('.json')||t.trim()[0]=='{'){const j=JSON.parse(t);cats=j.categories||[];rows=(j.expenses||[]).map(e=>[e.date,e.amount,e.category,e.note])}
+else{const W=csv(t),h=W[0].map(x=>x.trim().toLowerCase()),a=['дата','сума','категор','коментар'].map(k=>h.findIndex(x=>x.startsWith(k)));if(a[0]<0||a[1]<0)throw 0;rows=W.slice(1).map(r=>a.map(i=>i<0?'':r[i]||''))}
+let nc=0,add=0,skip=0,last='';const old=S.exp.slice();
+const mk=n=>{let c=S.cats.find(x=>x.name.trim().toLowerCase()==n.trim().toLowerCase());if(!c){const i=S.cats.length;c={id:uid(),name:n.trim(),desc:'',icon:ICO[i%ICO.length],color:COL[i%COL.length],limit:0};S.cats.push(c);nc++}return c};
+cats.forEach(x=>{if(!x.name)return;const c=mk(String(x.name));if(!c.desc&&x.description)c.desc=x.description;if(!c.limit&&x.monthly_limit)c.limit=+x.monthly_limit||0});
+rows.forEach(r=>{let d=String(r[0]).trim();const m=d.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);if(m)d=m[3]+'-'+m[2]+'-'+m[1];const a=Math.round(parseFloat(String(r[1]).replace(/\s/g,'').replace(',','.'))*100)/100;
+if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!(a>0)){skip++;return}
+const c=mk(String(r[2]||'').trim()||'Інше'),note=String(r[3]||'').trim();
+if(old.some(e=>e.date==d&&e.amount==a&&e.cat==c.id&&e.note==note)){skip++;return}
+S.exp.push({id:uid(),date:d,amount:a,cat:c.id,note});add++;if(d>last)last=d});
+save();if(last)M=last.slice(0,7);R();alert('Додано записів: '+add+', нових категорій: '+nc+(skip?', пропущено: '+skip:''))}catch(e){alert('Не вдалося прочитати файл')}};rd.readAsText(f);inp.value=''}
 function ex(t){const n=e=>cat(e.cat).name,all=[...S.exp].sort((a,b)=>a.date<b.date?-1:1);let s;
 if(t=='csv')s='\ufeff'+[['Дата','Сума (грн)','Категорія','Коментар'],...all.map(e=>[e.date,e.amount,n(e),e.note])].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
 else s=JSON.stringify({currency:'UAH',categories:S.cats.map(c=>({name:c.name,description:c.desc,monthly_limit:c.limit||null})),expenses:all.map(e=>({date:e.date,amount:e.amount,category:n(e),note:e.note}))},null,1);
