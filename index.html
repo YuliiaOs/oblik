@@ -87,6 +87,10 @@ input:focus{outline:2px solid var(--amb);border-color:transparent}
 .cf{display:flex;justify-content:space-between;margin-top:8px}.cf button{border:0;background:none;color:var(--amb);font-weight:600;padding:12px 8px}
 .hd{flex:none;width:44px;align-self:stretch;margin-left:4px;display:grid;place-items:center;color:var(--mut);touch-action:none;cursor:grab}
 .cc.drag{position:relative;z-index:5;box-shadow:0 14px 28px -8px rgba(20,50,100,.45);cursor:grabbing}
+.dh.t{cursor:pointer;align-items:center;min-height:44px;margin:6px 4px 0}.dh.t b{display:flex;align-items:center;gap:6px}
+.chv{font-style:normal;display:inline-block;width:18px;color:var(--amb);transition:transform .15s}.chv.cl{transform:rotate(-90deg)}
+.dh+.card{margin-top:2px}
+.lk{border:0;background:none;color:var(--amb);font-weight:600;padding:8px 4px}
 svg text{font-family:system-ui,sans-serif}
 </style></head><body><main id="app"></main>
 <button id="fab" onclick="oe()" aria-label="Додати витрату">+</button>
@@ -102,6 +106,8 @@ let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
 if(!S||!S.cats)S={cats:[['c1','Продукти','🛒',5],['c2','Транспорт','🚌',4],['c3','Дім','🏠',0],['c4',"Здоров'я",'💊',2],['c5','Розваги','🎬',3],['c6','Інше','🧾',7]].map(a=>({id:a[0],name:a[1],desc:'',icon:a[2],color:COL[a[3]],limit:0})),exp:[]};
 S.cats.forEach(c=>{const i=OLDC.indexOf(c.color);if(i>=0)c.color=COL[i]});
 const save=()=>localStorage.setItem(K,JSON.stringify(S));
+let CO={},CI=[];try{CO=JSON.parse(localStorage.getItem('oblik.co'))||{}}catch(e){}
+const tg=id=>{CO[id]=!CO[id];localStorage.setItem('oblik.co',JSON.stringify(CO));L()},ta=()=>{const c=!CI.every(id=>CO[id]);CI.forEach(id=>CO[id]=c);localStorage.setItem('oblik.co',JSON.stringify(CO));L()};
 let T='h',V='d',Q='',M=today().slice(0,7),CM=M,F={};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const money=n=>n.toLocaleString('uk-UA',{maximumFractionDigits:2})+' ₴';
@@ -125,7 +131,7 @@ function L(){const q=Q.trim().toLowerCase(),terms=q.split(/\s+/).filter(Boolean)
 const a=(terms.length?S.exp.filter(e=>{const h=(e.note+' '+cat(e.cat).name+' '+e.amount).toLowerCase();return terms.every(t=>h.includes(t))}):monthExp(M)).sort((x,y)=>x.date<y.date?1:x.date>y.date?-1:y.id>x.id?1:-1);
 let h='';if(!a.length)h=`<div class="empty">${terms.length?'Нічого не знайдено':'Записів за цей місяць немає.<br>Натисніть «+», щоб додати витрату'}</div>`;
 else if(V=='d'){const g={};a.forEach(e=>(g[e.date]=g[e.date]||[]).push(e));h=Object.keys(g).map(d=>`<div class="dh"><b>${fd(d)}</b><span>${money(sum(g[d]))}</span></div><div class="card np">${g[d].map(e=>row(e,terms.length)).join('')}</div>`).join('')}
-else{const oi=id=>{const i=S.cats.findIndex(c=>c.id==id);return i<0?999:i},ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>oi(x)-oi(y));h=ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id);return `<div class="dh"><b>${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}</span></div><div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}).join('')}
+else{const oi=id=>{const i=S.cats.findIndex(c=>c.id==id);return i<0?999:i},ids=[...new Set(a.map(e=>e.cat))].sort((x,y)=>oi(x)-oi(y));CI=ids;const all=ids.every(id=>CO[id]);h=`<div class="dh"><span></span><button class="lk" onclick="ta()">${all?'Розгорнути все':'Згорнути все'}</button></div>`+ids.map(id=>{const c=cat(id),l=a.filter(e=>e.cat==id),cl=CO[id];return `<div class="dh t" onclick="tg('${id}')"><b><i class="chv ${cl?'cl':''}">▾</i> ${c.icon} ${esc(c.name)}</b><span>${money(sum(l))}${cl?' · '+l.length:''}</span></div>${cl?'':`<div class="card np">${l.map(e=>row(e,1)).join('')}</div>`}`}).join('')}
 $('#list').innerHTML=h}
 const chips=()=>S.cats.length?S.cats.map(c=>`<button type="button" class="ct ${F.cat==c.id?'on':''}" style="--c:${c.color}" onclick="F.cat='${c.id}';$('#ch').innerHTML=chips()"><span class="ci">${c.icon}</span><small>${esc(c.name)}</small></button>`).join(''):'<small>Спершу додайте категорію</small>';
 let X='';const OP='+−×÷';
